@@ -1,0 +1,103 @@
+---
+title: "Functions without DFE"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+date: "2024-10-16"
+---
+
+```{r libraries, echo=FALSE, error=FALSE, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(ggthemes)
+library(dplyr)
+library(reshape2)
+library(rstudioapi)
+library(ggpubr)
+library(scales)
+library(plyr)
+library(ggpattern)
+```
+
+```{r parameters, echo=TRUE}
+#Arguments used to calculate Ne
+#20000 human genes, each human gene is a linkage block
+totallinkageblocks = 20000
+chromosomenumber=23
+
+N=200
+humanUd = c(2.0, 10.0)
+Kimetalsd=-0.009
+Boykoetalsd=-0.029
+```
+
+```{r functions, echo=FALSE, error=FALSE, warning=FALSE, message=FALSE}
+#function returns Ne as in Matheson and Masel 2024. 
+#r=2 per chromosome, two recombination events for chromosome arm
+calculate_Ne <- function(Ud, sh, totallinkageblocks, chromosomenumber, N){
+  Ne = N*exp(-8*Ud*(1-(1/totallinkageblocks))*sh)*exp(-Ud/(chromosomenumber*2))
+  return (Ne)
+}
+calculate_Pfix <- function(Ud, sd, totallinkageblocks, chromosomenumber, N){
+  Ne = calculate_Ne(Ud, -sd, totallinkageblocks, chromosomenumber, N)
+  Pfix = (1-exp(-2*sd))/(1-exp(-4*Ne*sd))
+  return (Pfix)
+}
+#Next function has to be zero to find the point where deterministic and stochastic accumulation equals each other
+calculate_deterministic_accumulation <- function(Ud, sh, totallinkageblocks, chromosomenumber, N){
+  deterministic_accumulation = 1-(1/(4.9*sqrt(Ud*sh)))
+  return (deterministic_accumulation)
+}
+
+#Next function has to be zero to find the point where deterministic and stochastic accumulation equals each other
+calculate_stochastic_accumulation <- function(Ud, sd, totallinkageblocks, chromosomenumber, N){
+  stochastic_accumulation = N*calculate_Pfix(Ud, sd, totallinkageblocks, chromosomenumber, N)
+  return (stochastic_accumulation)
+}
+
+#Next function has to be zero to find the point where deterministic and stochastic accumulation equals each other
+calculate_difference_equation <- function(Ud, sd, totallinkageblocks, chromosomenumber, N){
+  deterministic_accumulation = calculate_deterministic_accumulation(Ud, -sd, totallinkageblocks, chromosomenumber, N)
+  stochastic_accumulation = calculate_stochastic_accumulation(Ud, sd, totallinkageblocks, chromosomenumber, N)
+  difference = deterministic_accumulation-stochastic_accumulation
+  return (difference)
+}
+```
+
+```{r Kimetal calculation}
+minUd = 1/(-Kimetalsd*(4.9)^2)
+Ud <- 10^(seq(log10(minUd), 1, .1))
+deterministi_acc <- calculate_deterministic_accumulation(Ud, -Kimetalsd, totallinkageblocks, chromosomenumber, N)
+stochastic_acc <- calculate_stochastic_accumulation(Ud, Kimetalsd, totallinkageblocks, chromosomenumber, N)
+```
+
+```{r Kimetal plotting, echo=FALSE}
+pdata <- data.frame(Ud,
+                    values = c(deterministi_acc, stochastic_acc),
+                    label = as.factor(c(rep('Deterministic', length(deterministi_acc)), rep('Stochastic', length(stochastic_acc)))))
+
+pdeltad_Ud <- ggplot(pdata, aes(x=log10(Ud), y=values, color=label))+
+  geom_line()+
+  ggtitle(paste0("Kimet al: sd = ", Kimetalsd))
+  
+pdeltad_Ud
+```
+
+```{r Boykoetal calculation}
+minUd = 1/(-Boykoetalsd*(4.9)^2)
+Ud <- 10^(seq(log10(minUd), 1, .1))
+deterministi_acc <- calculate_deterministic_accumulation(Ud, -Boykoetalsd, totallinkageblocks, chromosomenumber, N)
+stochastic_acc <- calculate_stochastic_accumulation(Ud, Boykoetalsd, totallinkageblocks, chromosomenumber, N)
+```
+
+```{r Boykoetalsd plotting, echo=FALSE}
+pdata <- data.frame(Ud,
+                    values = c(deterministi_acc, stochastic_acc),
+                    label = as.factor(c(rep('Deterministic', length(deterministi_acc)), rep('Stochastic', length(stochastic_acc)))))
+
+pdeltad_Ud <- ggplot(pdata, aes(x=log10(Ud), y=values, color=label))+
+  geom_line()+
+  ggtitle(paste0("Boykoetal al: sd = ", Boykoetalsd))
+  
+pdeltad_Ud
+```
