@@ -1,3 +1,0 @@
-Burn-in phase called as ending in generation 348
-
-Fitness declined to less than 10^-10 during generation 6121.
