@@ -1,0 +1,5 @@
+Entered simulation run.
+Population initialized.
+Variables initialized, preparing to begin simulation.
+Just before individual wi data lines.
+Finished simulation with mean sb 1.000000. Final population summed fitness was: 886.947600
