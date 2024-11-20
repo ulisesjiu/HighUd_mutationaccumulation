@@ -1,8 +1,8 @@
 # HighUd_mutationaccumulation
-Code for mutation accumulation under high Ud
+Code for analysis of mutation accumulation under high Ud using simulation data
 
-To start using please create a new enviornment using the yml file in this repo.
-You can do this by typing 
+To start please create a new enviornment using the yml file in this repo.
+You can do this by typing in a terminal:
 
 ```
 conda env create --file HighUd_env.yml
@@ -11,16 +11,15 @@ conda activate HidhUd_mutationaccumulation
 
 This should let you use the environment on the VSCode kernell
 
-If using Jupyter notbooks you can aditionally type the next command on a terminal
+If you are using Jupyter notebooks, additionally type the next command on a terminal
 
 ```
 python -m ipykernel install --user --name=HidhUd_mutationaccumulation
 ```
 
-This will abilitate the environment into your jupyter notebook kernell selection
+This will enable the environment into your jupyter notebook's kernell 
 
-After this you can start working on the Jupyter notbooks available:
-
+The analysis is performed using jupyter notebooks in python.
 | File      | Description | 
 | :--- | :---- | 
 | PfixDFE.ipynb | This file allows to calculate the rate of mutation accumulation and genetic load for Moran population genetic models. Then it compares the theoretical prediction to simulated data. |
