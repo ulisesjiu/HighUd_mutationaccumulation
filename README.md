@@ -1,5 +1,5 @@
 ## About
-Code for analysis of mutation accumulation under high Ud using simulation data
+Code to analysis output data from the simulation package https://github.com/MaselLab/MutationLoad. Analysis include estimating the rate of mutation accumulation, genetic load in the population and CDF of fixed mutations.
 
 ## How to build
 To start please create a new enviornment using the yml file in this repo.
