@@ -1,6 +1,7 @@
-# HighUd_mutationaccumulation
+## About
 Code for analysis of mutation accumulation under high Ud using simulation data
 
+## How to build
 To start please create a new enviornment using the yml file in this repo.
 You can do this by typing in a terminal:
 
@@ -24,3 +25,10 @@ The analysis is performed using jupyter notebooks in python.
 | :--- | :---- | 
 | PfixDFE.ipynb | This file allows to calculate the rate of mutation accumulation and genetic load for Moran population genetic models. Then it compares the theoretical prediction to simulated data. |
 | findfixedmut.ipynb | This file allows to compute the table of fix mutations during a simulation. Then it calculate their CDF and compares it with theoretical expectation. |
+
+## Folders
+
+| Folder      | Description | 
+| :--- | :---- | 
+| graphs | Stores the graphs that results from the jupyter notebooks scripts |
+| data | Contains example data to perform analysis |
