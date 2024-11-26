@@ -6,6 +6,7 @@ To start please create a new enviornment using the yml file in this repo.
 You can do this by typing in a terminal:
 
 ```
+conda init
 conda env create --file HighUd_env.yml
 conda activate HidhUd_mutationaccumulation
 ```
